@@ -1,0 +1,15 @@
+# MATLAB temporary files
+*.asv
+*.m~
+*.autosave
+*.mex*
+slprj/
+codegen/
+
+# Local environments and OS files
+.DS_Store
+Thumbs.db
+
+# Do not add new participant-level/preprocessed data by default.
+Phase1/PreProcessed/
+Phase2/PreProcessed/

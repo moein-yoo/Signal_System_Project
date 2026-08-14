@@ -1,143 +1,87 @@
-# 🧩 From Power to Coupling: EEG Biomarkers of Cognitive Decline
+# EEG Power and Phase–Amplitude Coupling during Olfactory Stimulation
 
-**Signals and Systems – Sharif University of Technology**  
-- 📅 Spring 2025  
-- 👨‍🏫 Instructor: Prof. Hamid K. Aghajan  
+![MATLAB](https://img.shields.io/badge/MATLAB-R2023b-e16737)
+![EEGLAB](https://img.shields.io/badge/toolbox-EEGLAB-005EB8)
+![Domain](https://img.shields.io/badge/domain-EEG%20signal%20processing-6f42c1)
+![Status](https://img.shields.io/badge/status-course%20research-orange)
 
----
+A two-phase EEG signal-processing study of olfactory-evoked dynamics in Healthy Control, Mild Cognitive Impairment (MCI), and Mild Alzheimer's Disease groups. Phase 1 examines event-related spectral power; Phase 2 measures theta–gamma phase–amplitude coupling (PAC).
 
-## 📁 Repository Structure
+> [!CAUTION]
+> This is an exploratory course project, not a clinical diagnostic model. Group-level observations in the generated figures do not establish a validated Alzheimer's biomarker.
 
+## Analysis pipeline
+
+| Phase | Method | Configuration | Primary outputs |
+|---|---|---|---|
+| 1 | Short-Time Fourier Transform | theta 4–8 Hz; gamma 30–50 Hz; 0.5 s window | odor-locked power curves and group comparisons |
+| 2 | Hilbert-based PAC | theta phase 4–8 Hz; gamma amplitude 30–50 Hz; 1 s windows; 95% overlap | MVL time courses, Tort MI, polar plots, channel/group comparisons |
+
+The analysis uses Chocolate and Rose event markers and consistent $-2$ to $+5$ s epochs. PAC is computed per epoch, summarized by subject/odor/electrode, and then compared across groups.
+
+## Example outputs
+
+| Theta-power comparison | PAC comparison |
+|:---:|:---:|
+| ![Theta power](Phase1/Results/Comparison_theta_Chocolate.png) | ![PAC comparison](Phase2/plots/MVL_GroupComparison_Chocolate_Chocolate.png) |
+
+## Repository structure
+
+```text
+.
+├── Phase1/
+│   ├── Functions/       # Preprocessing, STFT, and plotting functions
+│   ├── PreProcessed/    # EEGLAB .set/.fdt inputs used in the course snapshot
+│   ├── Results/         # Saved power summaries and figures
+│   └── main.m
+├── Phase2/
+│   ├── Functions/       # MVL, MI, filtering, and plotting functions
+│   ├── plots/           # Subject/channel and group figures
+│   ├── PAC_*.mat        # Derived PAC summaries
+│   └── mainn.m
+└── README.md
 ```
-📦 root/
-├── 📁 Phase1/
-│   ├── 📁 Functions/             # MATLAB helper functions for preprocessing & power analysis
-│   ├── 📁 PreProcessed/          # Clean EEG data (Healthy, MCI, Mild AD)
-│   │   ├── Healthy/
-│   │   ├── MCI/
-│   │   └── Mild/
-│   ├── 📁 Results/               # STFT power outputs & group comparisons
-│   └── 📄 main.m                 # Main script for Phase 1
-│
-├── 📁 Phase2/
-│   ├── 📁 Functions/             # PAC extraction, MVL & MI computations, plotting utilities
-│   ├── 📁 plots/                 # Generated figures (time courses, polar plots, histograms)
-│   ├── 📁 PreProcessed/          # EEG .set files prepared in Phase 1
-│   ├── 📄 mainn.m                # Main script for Phase 2
-│   ├── 📄 PAC_all_subjects.mat   # Combined results (Healthy + MCI + Mild)
-│   ├── 📄 PAC_Healthy.mat        # Subject-specific results
-│   ├── 📄 PAC_MCI.mat
-│   └── 📄 PAC_Mild.mat
-│
-├── 📄 SS_Proj_Ph1.pdf            # Phase 1 report — Power Analysis
-├── 📄 SS_Proj_Ph2.pdf            # Phase 2 report — Phase-Amplitude Coupling (PAC)
-└── 📄 README.md                  # Project overview & instructions
-```
 
----
+## Requirements
 
-## 🧠 Project Overview
+- MATLAB R2023b or a compatible release
+- Signal Processing Toolbox
+- Statistics and Machine Learning Toolbox
+- [EEGLAB](https://sccn.ucsd.edu/eeglab/)
 
-This two-phase EEG study investigates **olfactory-evoked brain dynamics** as potential biomarkers for **Alzheimer’s disease**.  
-Using data from olfactory stimulation tasks, the analysis progresses:
+Add EEGLAB to the MATLAB path before running the scripts. The repository code no longer assumes a personal absolute path.
 
-- **Phase 1 – Power Analysis:**  
-  Preprocess EEG signals and study time-frequency power changes (θ and γ bands) via **Short-Time Fourier Transform (STFT)**.
+## Run
 
-- **Phase 2 – Phase-Amplitude Coupling (PAC):**  
-  Quantify how high-frequency (γ) amplitude is modulated by low-frequency (θ) phase using two metrics:
-  - **Mean Vector Length (MVL)** – time-resolved coupling strength  
-  - **Modulation Index (MI)** – structural specificity of coupling  
-
-Together, they provide a cross-frequency view of neural coordination during sensory processing, revealing potential **EEG-based biomarkers of cognitive decline**.
-
----
-
-## 🎯 Objectives per Phase
-
-### **Phase 1 – EEG Power Analysis**
-- Preprocess EEG using **EEGLAB** (filtering, ICA, epoching)
-- Compute θ (4-8 Hz) and γ (30-50 Hz) power with **STFT**
-- Compare odor-specific responses (🍫 chocolate vs 🌹 rose)
-- Examine group differences among **Healthy, MCI, Mild AD**
-
-### **Phase 2 – Phase-Amplitude Coupling (PAC)**
-- Extract θ-phase and γ-amplitude using **Hilbert Transform**
-- Compute time-resolved MVL and MI per trial → average per subject
-- Generate **polar plots**, **time courses**, and **group comparisons**
-- Perform electrode-wise PAC (e.g., Fp1/Fz/Pz analysis)
-- Integrate and compare MVL vs MI interpretations
-
----
-
-## 🛠️ Technologies Used
-
-- **MATLAB R2023b** (+ EEGLAB 2025.0.0)
-- **Signal Processing Toolbox**
-- **Wavelet and Hilbert transforms**
-- **Custom MATLAB Functions** for:
-  - `compute_MVL`, `compute_MI`, `sliding_window_MVL`
-  - Polar and histogram visualizations
-  - Group-level plots and comparisons
-
----
-
-## 🧩 Analytical Pipeline Summary
-
-| Phase | Core Method | Main Bands | Output Type | Key Files / Folders |
-|-------|--------------|-------------|--------------|---------------------|
-| 1 | STFT Power Analysis | θ (4–8 Hz), γ (30–50 Hz) | Power vs time curves | `Results/`, `compute_power_stft.m` |
-| 2 | PAC (MVL + MI) | θ ↔ γ coupling | Time-resolved MVL & MI, polar plots | `Functions/`, `plots/`, `mainn.m` |
-
----
-
-## 📊 Sample Visual Outputs
-
-- **Power Dynamics:** Event-locked θ and γ responses  
-- **PAC Time Course:** MVL/MI curves (Healthy > MCI > Mild AD)  
-- **Polar Plots:** Amplitude–phase histograms showing θ–γ alignment  
-- **Group Comparisons:** Fp1/Fz/Pz channel-wise averages  
-
----
-
-## 🧪 How to Run
-
-### **Phase 1**
 ```matlab
 cd Phase1
 run('main.m')
 ```
 
-### **Phase 2**
+Then, for PAC:
+
 ```matlab
 cd Phase2
-run('mainn.m')
+mainn
 ```
 
-Required MATLAB toolboxes: **Signal Processing**, **EEGLAB**, **Statistics**.  
-All figures will be saved automatically inside the corresponding `Results/` or `plots/` folders.
+Both entry points resolve their own `Functions/` directory. Generated figures are written to `Phase1/Results/` and `Phase2/plots/`.
 
----
+## Data and reproducibility
 
-## 📜 Reports
+The current course snapshot contains selected preprocessed EEGLAB files and derived results, not the full original cohort. The repository owner has confirmed the required permission to publish this snapshot. That confirmation does not automatically grant downstream users permission to redistribute or reuse participant-level data; reusers must follow the original dataset, consent, and institutional terms.
 
-Full documentation, figures, and theoretical explanations are provided in:
+## Course context
 
-- [`SS_Proj_Ph1.pdf`](SS_Proj_Ph1.pdf) – Power Analysis (Phase 1)  
-- [`SS_Proj_Ph2.pdf`](SS_Proj_Ph2.pdf) – Phase-Amplitude Coupling (Phase 2)
+- **Course:** Signals and Systems
+- **Institution:** Sharif University of Technology
+- **Instructor:** Prof. Hamid K. Aghajan
+- **Term:** Spring 2025
 
----
+## Contributors
 
-## 👥 Contributors
+- Moein Yousefinia
+- Kimia Fakheri
+- Matin M. Babaei
 
-**Authors**
-- Kimia Fakheri  – [kimia.fakheri@gmail.com](mailto:kimia.fakheri@gmail.com)  
-- Matin M. Babaei – [babaeimatin22@gmail.com](mailto:babaeimatin22@gmail.com)  
-
-**By**  
-- **Moein Yousefinia** – [moein.yoo84@sharif.edu](mailto:moein.yoo84@sharif.edu) | [moein_yoo@outlook.com](mailto:moein_yoo@outlook.com)
-
----
-
-> This repository combines both phases of the *Signals and Systems* EEG project — transitioning from traditional power analysis to advanced phase-amplitude coupling.  
-> It highlights how signal processing can illuminate neurophysiological coordination and contribute to early detection of cognitive impairment.
+No open-source license is granted by this repository unless a license file is added explicitly.
